@@ -24,6 +24,3 @@ jobs:
 
       - name: test
         run: npm run test
-
-      - name: Render Deployment
-        uses: sws2apps/render-deployment@v1.8.0
