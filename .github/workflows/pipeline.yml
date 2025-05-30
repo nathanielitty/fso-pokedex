@@ -11,6 +11,7 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-latest
+    environment: Render
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,7 +39,6 @@ jobs:
           DEFAULT_BUMP: patch
       
       - name: Test Success
-        environment: Render
         uses: rjstone/discord-webhook-notify@v1
         if: success()
         with:
@@ -46,7 +46,6 @@ jobs:
             details: Test Succeeded!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Failure
-        environment: Render
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
         with:
@@ -54,7 +53,6 @@ jobs:
             details: Test Failed!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Cancelled
-        environment: Render
         uses: rjstone/discord-webhook-notify@v1
         if: cancelled()
         with:
