@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+  pull_request:    
+    branches: [main]
+    types: [opened, synchronize]
+
 jobs:
   main:
     name: Deploy to Render
@@ -10,6 +14,7 @@ jobs:
     environment: Render
     steps:
       - name: Debug service ID format
+        if: ${{ github.event_name == 'push' }}
         run: |
           echo "Service ID length: ${#SERVICE_ID}"
           echo "Service ID starts with srv-: $(echo $SERVICE_ID | grep -q '^srv-' && echo 'yes' || echo 'no')"
@@ -17,6 +22,7 @@ jobs:
           SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
       
       - name: Trigger deployment
+        if: ${{ github.event_name == 'push' }}
         uses: sws2apps/render-deployment@main
         with:
           serviceId: ${{ secrets.RENDER_SERVICE_ID }}
